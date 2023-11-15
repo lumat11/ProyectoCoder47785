@@ -1,5 +1,5 @@
-from django.shortcuts import render
 from django.http import HttpResponse
+from django.shortcuts import render
 from AppCoder.models import Curso
 
 # Create your views here.
@@ -8,10 +8,10 @@ def crear_curso(request):
     curso.save()
     contexto = {"curso": curso}
 
-    return render(reques, 'index.html', contexto)
+    return render(request, 'index.html', contexto)
 
 
 def show_html(request):
-    curso = Curso.objects.firts()
-    contexto = {"curso": curso}
-    return render(request,  'index.html', contexto)
+    curso = Curso.objects.first()
+    contexto = {"curso": curso, "nombre": "Lucas"}
+    return render(request, 'index.html', contexto)
