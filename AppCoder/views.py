@@ -1,7 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.utils.datastructures import MultiValueDictKeyError
 from AppCoder.models import Curso
-from AppCoder.forms import CursoForm
+from AppCoder.forms import CursoForm, BusquedaCursoForm
 
 
 # Create your views here.
@@ -9,8 +10,7 @@ def mostrar_cursos(request):
     cursos = Curso.objects.all()
     contexto = {
         "cursos": cursos,
-        "nombre": "Lucas",
-        "form": BusquedaCursoForm(),
+        "nombre": "Lucas"
     }
     return render(request, "AppCoder/cursos.html", contexto)
 
@@ -41,15 +41,19 @@ def crear_curso_form(request):
 
 
 def busqueda_camada(request):
-    nombre = request.GET["nombre"]
-    cursos = Curso.objects.filter(nombre__icontains=nombre)
-    contexto = {
-        "cursos": cursos,
-        "nombre": "Lucas",
-        "form": BusquedaCursoForm(),
-    }
-    return render(request, "AppCoder/cursos.html", contexto)
+    try:
 
+        nombre = request.GET["nombre"]
+        cursos = Curso.objects.filter(nombre__icontains=nombre)
+        contexto = {
+            "cursos": cursos,
+            "nombre": "Lucas",
+            "form": BusquedaCursoForm(),
+        }
+        return render(request, "AppCoder/cursos.html", contexto)
+
+    except MultiValueDictKeyError:
+        return redirect("/app/cursos/")
 
 def show_html(request):
     curso = Curso.objects.first()
