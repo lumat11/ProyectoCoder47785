@@ -1,0 +1,11 @@
+{%  extends 'base.html' %}
+
+{%  block cambio %}
+
+    <form method="post">
+        {% csrf_token %}
+        Estás por eliminar el curso {{object}}, estás seguro?
+    <input type="submit" value="Eliminar">
+    </form>
+
+{% endblock %}
